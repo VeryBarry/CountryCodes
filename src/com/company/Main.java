@@ -1,11 +1,26 @@
 package com.company;
 
+import jodd.json.JsonParser;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        File f = new File("person.json");
 
+        ArrayList<Country> country = new ArrayList<>();
 
-
+        FileReader fr = new FileReader(f);
+        int fileSize = (int) f.length();
+        char[] contents = new char[fileSize];
+        fr.read(contents, 0, fileSize);
+        JsonParser parser = new JsonParser();
+        Country c = parser.parse(contents, Country.class);
+        System.out.println(c);
 
     }
 }
