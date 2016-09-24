@@ -1,34 +1,53 @@
 package com.company;
 
-import jodd.json.JsonParser;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
 
+    public static HashMap<String, ArrayList<Country>> countryHash = new HashMap<>();
+
     public static void main(String[] args) throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter a character: ");
+        String input = scanner.nextLine();
+
         File f = new File("countries.txt");
-
         ArrayList<Country> country = new ArrayList<>();
-
+        Scanner fileScanner;
         try {
-            FileReader fr = new FileReader(f);
-            int fileSize = (int) f.length();
-            char[] contents = new char[fileSize];
-            fr.read(contents, 0, fileSize);
-            System.out.println(contents);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            fileScanner = new Scanner(f);
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] column = line.split("\\|");
+                String countryID = column[0];
+                String countryName = column[1];
+
+                country.add();
+
+
+            }
+            for (Country c : country) {
+                String firstLetter = String.valueOf(countryID.charAt(0));
+                countryHash.put(firstLetter, new ArrayList<>());
+            }
+
+            for (Country c : country) {
+                String firstLetter = String.valueOf(countryName.charAt(0));
+                ArrayList<Country> currentList = countryHash.get(firstLetter);
+                countryHash.put(firstLetter, currentList);
+            }
+            System.out.println(countryHash);
+        }catch (FileNotFoundException e){
             e.printStackTrace();
         }
-
     }
 }
+
 
 /*
 Create a Country class to store both the name and abbreviation.

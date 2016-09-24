@@ -34,9 +34,6 @@ public class Country {
 
     @Override
     public String toString() {
-        return "Country{" +
-                "Country Code:'" + countryCode + '\'' +
-                ", Country Name:" + countryCode +
-                '}';
+        return "Country{" + "Country Code:'" + countryCode + '\'' + ", Country Name:" + countryCode + '}';
     }
 }
