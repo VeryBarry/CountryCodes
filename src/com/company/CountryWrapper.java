@@ -12,7 +12,7 @@ public class CountryWrapper {
 
     }
 
-    public CountryWrapper(ArrayList<Country> people) {
+    public CountryWrapper(ArrayList<Country> country) {
         this.country = country;
     }
 
