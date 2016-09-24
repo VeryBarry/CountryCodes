@@ -9,9 +9,7 @@ public class CountryWrapper {
     ArrayList<Country> country;
 
     CountryWrapper(){
-
     }
-
     public CountryWrapper(ArrayList<Country> country) {
         this.country = country;
     }
