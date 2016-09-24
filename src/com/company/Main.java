@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File f = new File("person.json");
+        File f = new File("countries.json");
 
         ArrayList<Country> country = new ArrayList<>();
 
