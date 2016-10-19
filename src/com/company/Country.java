@@ -7,13 +7,9 @@ public class Country {
     String countryCode;
     String countryName;
 
-    Country(){
-
-    }
-
-    Country(String newCode, String newName) {
-        setCountryCode(newCode);
-        setCountryName(newName);
+    public Country(String countryCode, String countryName) {
+        this.countryCode = countryCode;
+        this.countryName = countryName;
     }
 
     public String getCountryName() {

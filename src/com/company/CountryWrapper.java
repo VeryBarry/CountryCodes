@@ -6,13 +6,9 @@ import java.util.ArrayList;
  * Created by VeryBarry on 9/23/16.
  */
 public class CountryWrapper {
-    ArrayList<Country> country;
+    public ArrayList<Country> country;
 
-    CountryWrapper(){}
-
-    public CountryWrapper(ArrayList<Country> country) {
-        this.country = country;
-    }
+    public CountryWrapper(){}
 
     public ArrayList<Country> getCountry() {
         return country;

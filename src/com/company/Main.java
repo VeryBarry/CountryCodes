@@ -1,5 +1,7 @@
 package com.company;
 
+import jodd.json.JsonSerializer;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,70 +9,83 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static HashMap<String, ArrayList<Country>> countryHash = new HashMap<>();
+    public static HashMap<String, ArrayList<Country>> countriesH = new HashMap<>();
+    static final String countriesList = "countries.txt";
+    public static String firstLetter1;
 
-    public static void main(String[] args) throws IOException {
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter a character: ");
-        String input = scanner.nextLine();
-
-        File f = new File("countries.txt");
-        ArrayList<Country> country = new ArrayList<>();
+    public static ArrayList<Country> read(String countriesList) {
+        ArrayList<Country> countries = new ArrayList<>();
+        File file = new File("countries.txt");
         Scanner fileScanner;
         try {
-            fileScanner = new Scanner(f);
+            fileScanner = new Scanner(file);
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
-                String[] column = line.split("\\|");
-                String countryID = column[0];
-                String countryName = column[1];
-
-                country.add();
-
-
+                String[] columns = line.split("\\|");
+                Country country = new Country(columns[0], columns[1]);
+                countries.add(country);
             }
-            for (Country c : country) {
-                String firstLetter = String.valueOf(countryID.charAt(0));
-                countryHash.put(firstLetter, new ArrayList<>());
-            }
-
-            for (Country c : country) {
-                String firstLetter = String.valueOf(countryName.charAt(0));
-                ArrayList<Country> currentList = countryHash.get(firstLetter);
-                countryHash.put(firstLetter, currentList);
-            }
-            System.out.println(countryHash);
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return countries;
     }
+    public static void addHash (ArrayList<Country> countries) {
+        for (Country country : countries) {
+            String secondLetter = String.valueOf(country.countryCode.charAt(0));
+            ArrayList<Country> countryNameBeginsWith = countriesH.get(secondLetter);
+            if ( countryNameBeginsWith == null) {
+                countryNameBeginsWith = new ArrayList<>();
+            }
+            countryNameBeginsWith.add(country);
+            countriesH.put(secondLetter, countryNameBeginsWith);
+        }
+    }
+    public static void createFile(String firstLetter1, ArrayList<Country> countryList) throws IOException {
+        File countryFile = new File(firstLetter1 + "_countries.txt");
+        FileWriter fileWriter = new FileWriter(countryFile);
+        for (Country country : countryList) {
+            fileWriter.append(country.toString() + "\n");
+        }
+        fileWriter.close();
+    }
+    public static void createJson(String firstLetter1, ArrayList<Country> countryList) throws IOException {
+        File countryJson = new File(firstLetter1 + "_countries.json");
+        JsonSerializer serializer = new JsonSerializer();
+        CountryWrapper wrapper = new CountryWrapper();
+        wrapper.country = countryList;
+        String json = serializer.deep(true).serialize(wrapper);
+        FileWriter writeJson = new FileWriter(countryJson);
+        writeJson.write(json);
+        writeJson.close();
+    }
+    public static void main(String[] args) throws IOException {
+        ArrayList<Country> countriesA = read(countriesList);
+        System.out.println("Please enter a letter.");
+        Scanner scanner = new Scanner(System.in);
+        String firstLetter = scanner.nextLine();
+        String firstLetter1 = firstLetter.toUpperCase();
+        System.out.println("You entered : " + firstLetter1);
+        if (!firstLetter1.matches("^[a-zA-Z]+$")){
+            System.out.println("You must enter a letter.");
+            main(args);
+            return;
+        }
+        if (firstLetter1.isEmpty()) {
+            System.out.println("You have to enter a letter");
+            main(args);
+            return;
+        }
+        if (firstLetter1.length() > 1) {
+            System.out.println("You may only enter one letter.");
+            main(args);
+            return;
+        }
+        addHash(countriesA);
+        ArrayList<Country> countryList = countriesH.get(firstLetter1);
+        createFile(firstLetter1,countryList);
+        createJson(firstLetter1,countryList);
+    }
+
+
 }
-
-
-/*
-Create a Country class to store both the name and abbreviation.
-
-Read and parse the "countries.txt" file into an HashMap<String, ArrayList<Country>>
-    where the key is a single letter and the value is a list of countries whose names start with that letter.
-
-Ask the user to type a letter (if they don't type a single letter, throw an exception).
-
-Save an "X_countries.txt" file, where X is the letter they typed, which only lists the countries starting with that letter.
-
-Break your code into separate methods, especially the for loop that loops over each line in the file,
-    and the code under it that reads the user's input and writes the file.
-
-Write tests for your methods where it makes sense to.
-
-Encode the output as JSON instead of building a string manually.
-
-You should be able to take the ArrayList you pulled out of your HashMap and put it in a wrapper class.
-
-Remember to add getters to your Country class.
-
-Override the toString method in your Country class so when you print your HashMap you can see the country abbreviations and names.
-
-Recall that, by default, Java prints out objects like this: Country@21345362.
-*/
