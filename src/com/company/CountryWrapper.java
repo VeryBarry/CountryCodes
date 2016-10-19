@@ -7,13 +7,10 @@ import java.util.ArrayList;
  */
 public class CountryWrapper {
     public ArrayList<Country> country;
-
     public CountryWrapper(){}
-
     public ArrayList<Country> getCountry() {
         return country;
     }
-
     public void setCountry(ArrayList<Country> country) {
         this.country = country;
     }

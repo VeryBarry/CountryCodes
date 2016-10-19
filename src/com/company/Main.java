@@ -81,6 +81,4 @@ public class Main {
         createFile(cCode, countryList);
         createJson(cCode, countryList);
     }
-
-
 }
