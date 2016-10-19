@@ -11,7 +11,7 @@ public class Main {
 
     public static HashMap<String, ArrayList<Country>> countriesH = new HashMap<>();
     static final String countriesList = "countries.txt";
-    public static String firstLetter1;
+    public static String cCode;
 
     public static ArrayList<Country> read(String countriesList) {
         ArrayList<Country> countries = new ArrayList<>();
@@ -41,16 +41,16 @@ public class Main {
             countriesH.put(secondLetter, countryNameBeginsWith);
         }
     }
-    public static void createFile(String firstLetter1, ArrayList<Country> countryList) throws IOException {
-        File countryFile = new File(firstLetter1 + "_countries.txt");
+    public static void createFile(String cCode, ArrayList<Country> countryList) throws IOException {
+        File countryFile = new File(cCode + "_countries.txt");
         FileWriter fileWriter = new FileWriter(countryFile);
         for (Country country : countryList) {
             fileWriter.append(country.toString() + "\n");
         }
         fileWriter.close();
     }
-    public static void createJson(String firstLetter1, ArrayList<Country> countryList) throws IOException {
-        File countryJson = new File(firstLetter1 + "_countries.json");
+    public static void createJson(String cCode, ArrayList<Country> countryList) throws IOException {
+        File countryJson = new File(cCode + "_countries.json");
         JsonSerializer serializer = new JsonSerializer();
         CountryWrapper wrapper = new CountryWrapper();
         wrapper.country = countryList;
@@ -61,25 +61,25 @@ public class Main {
     }
     public static void main(String[] args) throws IOException {
         ArrayList<Country> countriesA = read(countriesList);
-        System.out.println("Please enter a letter.");
+        System.out.println("Please enter a letter:");
         Scanner scanner = new Scanner(System.in);
-        String firstLetter = scanner.nextLine();
-        String firstLetter1 = firstLetter.toUpperCase();
-        System.out.println("You entered : " + firstLetter1);
-        if (firstLetter1.isEmpty()) {
-            System.out.println("You have to enter a letter");
+        String inputLetter = scanner.nextLine();
+        String cCode = inputLetter.toUpperCase();
+        System.out.println("Letter entered: " + cCode);
+        if (cCode.isEmpty()) {
+            System.out.println("You must enter a letter.");
             main(args);
             return;
         }
-        if (firstLetter1.length() > 1) {
+        if (cCode.length() > 1) {
             System.out.println("You may only enter one letter.");
             main(args);
             return;
         }
         addHash(countriesA);
-        ArrayList<Country> countryList = countriesH.get(firstLetter1);
-        createFile(firstLetter1,countryList);
-        createJson(firstLetter1,countryList);
+        ArrayList<Country> countryList = countriesH.get(cCode);
+        createFile(cCode, countryList);
+        createJson(cCode, countryList);
     }
 
 
